@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios')
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000; //for deployment
 
 const results = axios.get('https://api.bitfinex.com/v1/pubticker/btcusd')
   .then(function (response) {
