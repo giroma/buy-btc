@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 class Form extends Component {
+  saveAmount = () => {
+
+  }
   render() {
     return (
       <div className="form">
@@ -13,11 +16,11 @@ class Form extends Component {
         </div>
         <span>Trade</span>
         <input type="text" disabled="true" placeholder="USD" />
-        <input type="text" placeholder="Enter your amount" value={this.props.input} onChange={this.props.changeInput}/>
+        <input className='input-field' type="number" max={this.props.usd} placeholder="Enter your amount" onChange={this.props.handleInputChange}/>
         <span>For</span>
         <input type="text" disabled="true" placeholder="BTC"  />
-        <input type="text" disabled="true" placeholder="Display Quote"/>
-        <button className="button">Trade</button>
+        <input type="text" disabled="true" placeholder="Display Quote" value={this.props.quote}/>
+        <button className="button" onClick={this.props.handleTrade}>Trade</button>
       </div>
     )
   }
