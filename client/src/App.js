@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
 import Form from './Form.js';
 import logo from './logo.svg';
-
 import './App.css';
 
+import {connect} from 'react-redux'
+import {updateUsdBalance, updateBtcBalance} from './actions/balance-actions'
+import {updateQuote, updateLastPrice, updateUserInput} from './actions/form-actions'
+
 class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-      usdBalance: 156.12,
-      btcBalance: 0.00000000,
-      lastPrice: undefined,
-      userInput: '',
-      quote: ''
-    }
-  }
+
 
   componentDidMount() {
     this.callBitfinexApi()
-      .then(res => this.setState({ lastPrice: Number(res.data) }))
+      .then(res => this.onUpdateLastPrice(Number(res.data)))
       .catch(err => console.log(err));
   }
 
@@ -31,45 +25,77 @@ class App extends Component {
   };
 
   handleInputChange = (e) => {
-    this.setState({userInput: Number(e.target.value)})
+    this.onUpdateUserInput(Number(e.target.value))
     this.calculateQuote(e.target.value)
   }
 
   calculateQuote = (amount) => {
-    const lastPrice = this.state.lastPrice
+    const lastPrice = this.props.lastPrice
     const quote = amount / lastPrice;
     if (amount > 0) {
-      this.setState({quote: Number(quote.toFixed(8))})
+      this.onUpdateQuote( Number(quote.toFixed(8)))
     } else {
-      this.setState({quote: '', userInput: ''})
+      this.onUpdateQuote('')
+      this.onUpdateUserInput('')
     }
   }
 
   handleTrade = (e) => {
     e.preventDefault()
-    const lastPrice = this.state.lastPrice
-    const accountUSD = this.state.usdBalance
-    const accountBTC = this.state.btcBalance
-    const userInput = this.state.userInput
+    const lastPrice = this.props.lastPrice
+    const accountUSD = this.props.usdBalance
+    const accountBTC = this.props.btcBalance
+    const userInput = this.props.userInput
     const quote = userInput/lastPrice
     const newDollarBalance = accountUSD - userInput
     const newBitcoinBalance = accountBTC + quote
-    this.setState({ usdBalance: Number(newDollarBalance.toFixed(2)),
-                    btcBalance: Number(newBitcoinBalance.toFixed(8)),
-                    quote: '',
-                    userInput: ''})
+    if (userInput) {
+      this.onUpdateUsdBalance(Number(newDollarBalance.toFixed(2)))
+      this.onUpdateBtcBalance(Number(newBitcoinBalance.toFixed(8)))
+      this.onUpdateQuote('')
+      this.onUpdateUserInput('')  
+    }
+  }
+
+  onUpdateQuote(quote) {
+    this.props.onUpdateQuote(quote)
+  }
+  onUpdateLastPrice(lastPrice) {
+    this.props.onUpdateLastPrice(lastPrice)
+  }
+  onUpdateUserInput(userInput) {
+    this.props.onUpdateUserInput(userInput)
+  }
+  onUpdateBtcBalance(btcBalance) {
+    this.props.onUpdateBtcBalance(btcBalance)
+  }
+  onUpdateUsdBalance(usdBalance) {
+    this.props.onUpdateUsdBalance(usdBalance)
   }
 
   render() {
     return (
-      <Form usdBalance={this.state.usdBalance}
-            btcBalance={this.state.btcBalance}
-            quote={this.state.quote}
-            userInput={this.state.userInput}
+      <Form usdBalance={this.props.usdBalance}
+            btcBalance={this.props.btcBalance}
+            quote={this.props.quote}
+            userInput={this.props.userInput}
             handleInputChange={this.handleInputChange}
             handleTrade={this.handleTrade}/>
     );
   }
 }
-
-export default App;
+const mapStateToProps = state => ({
+  usdBalance: state.usdBalance,
+  btcBalance: state.btcBalance,
+  lastPrice: state.lastPrice,
+  userInput: state.userInput,
+  quote: state.quote
+})
+const mapActionsToProps = {
+  onUpdateUsdBalance: updateUsdBalance,
+  onUpdateUserInput: updateUserInput,
+  onUpdateLastPrice: updateLastPrice,
+  onUpdateBtcBalance: updateBtcBalance,
+  onUpdateQuote: updateQuote
+}
+export default connect(mapStateToProps, mapActionsToProps)(App);
