@@ -1,5 +1,5 @@
 import {createStore, combineReducers} from 'redux'
-
+//import all the reducers
 import usdBalanceReducer from '../reducers/usd-balance-reducer'
 import btcBalanceReducer from '../reducers/btc-balance-reducer'
 import userInputReducer from '../reducers/user-input-reducer'
@@ -13,7 +13,7 @@ const allReducers = combineReducers({
   userInput: userInputReducer,
   quote: quoteReducer
 })
-
+//create store with initial states
 const store = createStore(
   allReducers,
   {
@@ -23,7 +23,7 @@ const store = createStore(
     userInput: '',
     quote: ''
   },
-  window.devToolsExtension && window.
+  window.devToolsExtension && window. //allows browser redux dev tools to work
     devToolsExtension()
 )
 

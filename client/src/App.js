@@ -35,7 +35,7 @@ class App extends Component {
     if (amount > 0) {
       this.onUpdateQuote( Number(quote.toFixed(8)))
     } else {
-      this.onUpdateQuote('')
+      this.onUpdateQuote('') //reset fields when input empty
       this.onUpdateUserInput('')
     }
   }
@@ -49,14 +49,15 @@ class App extends Component {
     const quote = userInput/lastPrice
     const newDollarBalance = accountUSD - userInput
     const newBitcoinBalance = accountBTC + quote
+    //if there is input on submit, update balances, and reset form fields
     if (userInput) {
       this.onUpdateUsdBalance(Number(newDollarBalance.toFixed(2)))
       this.onUpdateBtcBalance(Number(newBitcoinBalance.toFixed(8)))
       this.onUpdateQuote('')
-      this.onUpdateUserInput('')  
+      this.onUpdateUserInput('')
     }
   }
-
+//functions that change the states, with the actions coming from props
   onUpdateQuote(quote) {
     this.props.onUpdateQuote(quote)
   }
@@ -98,4 +99,6 @@ const mapActionsToProps = {
   onUpdateBtcBalance: updateBtcBalance,
   onUpdateQuote: updateQuote
 }
+
+//CONNECT, connects the above sattes and actions to the app props
 export default connect(mapStateToProps, mapActionsToProps)(App);
