@@ -9,7 +9,9 @@ Price is set only on start.
 
 ## To run:
 run 'npm install' in root, for node dependencies.
+
 **run 'npm install' in 'client' directory, for react dependencies**
+
 'yarn dev' from root runs both node and client concurrently
 
 ## Future additions:
