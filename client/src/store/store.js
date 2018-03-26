@@ -19,7 +19,7 @@ const store = createStore(
   {
     usdBalance: 156.12,
     btcBalance: 0.00000000,
-    lastPrice: 9000,
+    lastPrice: undefined,
     userInput: '',
     quote: ''
   },

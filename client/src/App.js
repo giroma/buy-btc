@@ -13,13 +13,14 @@ class App extends Component {
   componentDidMount() {
     this.callBitfinexApi()
       .then(res => this.onUpdateLastPrice(Number(res.data)))
-      .catch(err => console.log(err));
+      .catch(() => alert('Server cannot fetch BTC price, try again later.'));
   }
 
   callBitfinexApi = async () => {
     const response = await fetch('/BTCUSD');
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
+
 
     return body;
   };
@@ -49,8 +50,8 @@ class App extends Component {
     const quote = userInput/lastPrice
     const newDollarBalance = accountUSD - userInput
     const newBitcoinBalance = accountBTC + quote
-    //if there is input on submit, update balances, and reset form fields
-    if (userInput) {
+    //if there is input and lastPrice has a value, update balances, and reset form fields
+    if (userInput && lastPrice) {
       this.onUpdateUsdBalance(Number(newDollarBalance.toFixed(2)))
       this.onUpdateBtcBalance(Number(newBitcoinBalance.toFixed(8)))
       this.onUpdateQuote('')
