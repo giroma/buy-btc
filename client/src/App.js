@@ -9,7 +9,6 @@ import {updateQuote, updateLastPrice, updateUserInput} from './actions/form-acti
 
 class App extends Component {
 
-
   componentDidMount() {
     this.callBitfinexApi()
       .then(res => this.onUpdateLastPrice(Number(res.data)))
