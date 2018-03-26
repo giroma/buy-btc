@@ -21,7 +21,6 @@ class App extends Component {
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
 
-
     return body;
   };
   //changes state when typing and displays quoted price
@@ -33,7 +32,7 @@ class App extends Component {
   calculateQuote = (amount) => {
     const lastPrice = this.props.lastPrice
     const quote = amount / lastPrice;
-    if (amount > 0) {
+    if (amount) {
       this.onUpdateQuote( Number(quote.toFixed(8)))
     } else { //reset fields when input empty
       this.onUpdateQuote('')
@@ -51,7 +50,7 @@ class App extends Component {
     const newDollarBalance = accountUSD - userInput
     const newBitcoinBalance = accountBTC + quote
     //if there is input and lastPrice has a value, update balances, and reset form fields
-    if (userInput && lastPrice) {
+    if (userInput > 0 && lastPrice) {
       this.onUpdateUsdBalance(Number(newDollarBalance.toFixed(2)))
       this.onUpdateBtcBalance(Number(newBitcoinBalance.toFixed(8)))
       this.onUpdateQuote('')
