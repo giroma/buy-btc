@@ -13,6 +13,7 @@ class Form extends Component {
         </div>
         <span>Trade</span>
         <input type="text" disabled="true" placeholder="USD" />
+        {/* min and max validation on form submit */}
         <input className='input-field' type="number" value = {this.props.userInput} minLength='1' step='any' min='1.0' max={this.props.usdBalance} placeholder="Enter your amount" onChange={this.props.handleInputChange}/>
         <span>For</span>
         <input type="text" disabled="true" placeholder="BTC"  />

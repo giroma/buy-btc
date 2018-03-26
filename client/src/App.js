@@ -17,13 +17,13 @@ class App extends Component {
   }
 
   callBitfinexApi = async () => {
-    const response = await fetch('/api/hello');
+    const response = await fetch('/BTCUSD');
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
 
     return body;
   };
-
+  //changes state when typing and displays quoted price
   handleInputChange = (e) => {
     this.onUpdateUserInput(Number(e.target.value))
     this.calculateQuote(e.target.value)
@@ -34,14 +34,14 @@ class App extends Component {
     const quote = amount / lastPrice;
     if (amount > 0) {
       this.onUpdateQuote( Number(quote.toFixed(8)))
-    } else {
-      this.onUpdateQuote('') //reset fields when input empty
+    } else { //reset fields when input empty
+      this.onUpdateQuote('')
       this.onUpdateUserInput('')
     }
   }
-
+  //handles the trade once clicked, updating BTC and USD balances and resetting form fields
   handleTrade = (e) => {
-    e.preventDefault()
+    e.preventDefault() //prevent form from refreshing the app on submit
     const lastPrice = this.props.lastPrice
     const accountUSD = this.props.usdBalance
     const accountBTC = this.props.btcBalance
@@ -100,5 +100,5 @@ const mapActionsToProps = {
   onUpdateQuote: updateQuote
 }
 
-//CONNECT, connects the above sattes and actions to the app props
+//CONNECT, connects the above states and actions to the app props
 export default connect(mapStateToProps, mapActionsToProps)(App);
