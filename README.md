@@ -12,7 +12,11 @@ run 'npm install' in root, for node dependencies.
 
 **run 'npm install' in 'client' directory, for react dependencies**
 
-'yarn dev' from root runs both node and client concurrently
+run 'yarn dev' from root, to run both node and client(React) concurrently
+
+## Testing
+'npm test' from 'client' directory
 
 ## Future additions:
 Bitfinex API websocket for price data
+More testing
